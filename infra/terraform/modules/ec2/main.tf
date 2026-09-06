@@ -17,6 +17,7 @@ resource "aws_instance" "nodes" {
   associate_public_ip_address = true
   iam_instance_profile        = each.value.role == "server" ? aws_iam_instance_profile.ssm.name : null
 
+
   vpc_security_group_ids = each.value.role == "server" ? [
     var.nodes_security_group_id,
     var.server_security_group_id
@@ -50,4 +51,11 @@ resource "aws_instance" "nodes" {
   volume_tags = {
     Name = "${var.name}-${each.key}-root"
   }
+}
+
+resource "aws_ec2_instance_state" "nodes" {
+  for_each = aws_instance.nodes
+
+  instance_id = each.value.id
+  state       = "running"
 }

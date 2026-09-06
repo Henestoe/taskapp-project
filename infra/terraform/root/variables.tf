@@ -60,7 +60,7 @@ variable "nodes" {
   default = {
     server = {
       role          = "server"
-      instance_type = "t3.medium"
+      instance_type = "t3.small"
       disk_size     = 30
     }
 
